@@ -1,6 +1,7 @@
 <template>
   <div class="default">
     <MyHeader/>
+    <nuxt/>
   </div>
 </template>
 

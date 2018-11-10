@@ -15,10 +15,44 @@
     <div class="right">
       <div class="right-top">
         <input 
+          v-model="searchText"
           class="search-text"
           type="text" 
-          placeholder="搜索商家或地点">
+          placeholder="搜索商家或地点"
+          @focus="searchFocus = true"
+          @blur="searchBlur"
+          @input="inputChange">
         <i class="el-icon-search search-btn" />
+        <div 
+          v-show="searchFocus"
+          class="hot-search" >
+          <p class="hot-search-title">热门搜索</p>
+          <p class="hot-search-options">
+            <nuxt-link
+              to="/b"
+            >
+              北京欢乐谷
+            </nuxt-link>
+            <nuxt-link
+              to="/"
+            >
+              故宫博物院
+            </nuxt-link>
+          </p>
+        </div>
+        <div 
+          v-show="searchFocus&&searchText"
+          class="search-list">
+          <p 
+            v-for="(item, index) in searchInfo"
+            :key="index">
+            <nuxt-link
+              to="/"
+            >
+              {{ item }}
+            </nuxt-link>
+          </p>
+        </div>
       </div>
       <div class="right-mid">
         <nuxt-link
@@ -74,7 +108,25 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      searchFocus: false,
+      searchText: '',
+      searchInfo: ['火锅A', '火锅B', '火锅C']
+    }
+  },
+  methods: {
+    searchBlur() {
+      setTimeout(() => {
+        this.searchFocus = false
+      }, 200)
+    },
+    inputChange() {
+      console.log(this.searchText)
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -113,6 +165,54 @@ export default {}
         border-radius: 5px 0 0 5px;
         &::placeholder {
           color: #999;
+        }
+      }
+      .hot-search {
+        position: absolute;
+        width: 437px;
+        background: #fff;
+        border-radius: 0 0 5px 5px;
+        padding: 20px 15px 20px 10px;
+        z-index: 5;
+        font-size: 12px;
+        color: #999;
+        box-shadow: 0 5px 3px 0 rgba(0, 0, 0, 0.1);
+        .hot-search-title {
+          font-weight: bold;
+          margin-bottom: 15px;
+        }
+        .hot-search-options {
+          a {
+            color: #999;
+            text-decoration: none;
+            margin-right: 5px;
+            &:hover {
+              color: #13d1be;
+            }
+          }
+        }
+      }
+      .search-list {
+        position: absolute;
+        width: 462px;
+        background: #fff;
+        border-radius: 0 0 5px 5px;
+        padding-top: 5px;
+        z-index: 7;
+        box-shadow: 0 5px 7px 0 rgba(0, 0, 0, 0.1);
+        p {
+          padding: 0 10px;
+          line-height: 26px;
+          &:hover {
+            background: rgb(248, 248, 248);
+            a {
+              color: #13d1be;
+            }
+          }
+          a {
+            text-decoration: none;
+            font-size: 12px;
+          }
         }
       }
       .search-btn {

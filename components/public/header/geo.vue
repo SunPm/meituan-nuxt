@@ -55,7 +55,15 @@
 export default {
   data() {
     return {
-      user: 'cylhah'
+      user: ''
+    }
+  },
+  async mounted() {
+    try {
+      const { data } = await this.$axios.get('/user/getUser')
+      this.user = data.user
+    } catch (error) {
+      console.log(error)
     }
   }
 }
